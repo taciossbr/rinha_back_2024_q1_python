@@ -87,7 +87,7 @@ def extrato(cliente_id: str):
             '''
             SELECT limite, saldo AS total, NOW() as data_extrato
             FROM clientes 
-            WHERE id = %s FOR SHARE''',
+            WHERE id = %s''',
             (cliente_id,))
         if cur_saldo.rowcount == 0:
             return jsonify(error='nao encontrado'), 404
@@ -104,11 +104,6 @@ def extrato(cliente_id: str):
         transacoes = cur_transacoes.fetchall()
 
         return jsonify(
-            # saldo=dict(
-            #     limite=limite,
-            #     saldo=saldo,
-            #     data_extrato=data_extrato,
-            # ),
             saldo=saldo,
             ultimas_transacoes=transacoes)
 
