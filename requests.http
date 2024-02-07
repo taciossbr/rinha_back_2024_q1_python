@@ -1,0 +1,32 @@
+@baseurl = http://localhost:9999
+
+
+### Hello ?
+GET {{baseurl}}/hello
+
+### Add Credito
+
+POST {{baseurl}}/clientes/1/transacoes
+Content-Type: application/json
+
+{
+    "valor": 1000,
+    "tipo" : "c",
+    "descricao" : "descricao"
+}
+
+### Add debito
+
+POST {{baseurl}}/clientes/1/transacoes
+Content-Type: application/json
+
+{
+    "valor": 100000,
+    "tipo" : "d",
+    "descricao" : "descricao"
+}
+
+
+### extrato
+
+GET {{baseurl}}/clientes/1/extrato

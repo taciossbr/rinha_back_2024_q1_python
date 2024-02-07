@@ -1,0 +1,22 @@
+version: "3.1"
+
+services:
+  dbtest:
+    image: postgres:16.1
+    restart: always
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: rinha
+      POSTGRES_PASSWORD: rinha
+    volumes:
+      - ./init_clientes.sql:/docker-entrypoint-initdb.d/init_clientes.sql:ro
+      # - pg_data:/var/lib/postgresql
+      - pg_data_test:/var/lib/postgresql
+  db:
+    volumes:
+    - ./init_clientes.sql:/docker-entrypoint-initdb.d/init_clientes.sql:ro
+    - pg_data:/var/lib/postgresql
+volumes:
+  pg_data_test: {}

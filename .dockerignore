@@ -1,0 +1,10 @@
+nginx.conf
+.venv
+docker-compose*
+rinha-de-backend-2024-q1
+Dockerfile
+load-test
+requests.http
+init_clientes.sql
+executar-teste-local.sh
+meu-teste-local.sh
