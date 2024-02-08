@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 db_pool = psycopg_pool.ConnectionPool(
     os.environ.get('DATABASE_URL'),
-    min_size=2, max_size=20
+    min_size=20, max_size=250
 )
 
 

@@ -12,11 +12,13 @@ services:
       POSTGRES_PASSWORD: rinha
     volumes:
       - ./init_clientes.sql:/docker-entrypoint-initdb.d/init_clientes.sql:ro
+      - ./postgres.conf:/docker-entrypoint-initdb.d/postgres.conf
       # - pg_data:/var/lib/postgresql
       - pg_data_test:/var/lib/postgresql
   db:
     volumes:
     - ./init_clientes.sql:/docker-entrypoint-initdb.d/init_clientes.sql:ro
+    - ./postgres.conf:/docker-entrypoint-initdb.d/postgres.conf
     - pg_data:/var/lib/postgresql
 volumes:
   pg_data_test: {}

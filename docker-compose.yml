@@ -11,6 +11,7 @@ services:
             POSTGRES_PASSWORD: rinha
         volumes:
             - ./init_clientes.sql:/docker-entrypoint-initdb.d/init_clientes.sql:ro
+            - ./postgres.conf:/docker-entrypoint-initdb.d/postgres.conf
             # - pg_data:/var/lib/postgresql
         deploy:
             resources:
@@ -19,8 +20,8 @@ services:
                     # aqui declarados é de 1.5 unidades de CPU e 550MB
                     # de memória. A distribuição feita aqui é apenas
                     # um exemplo – distribua como quiser.
-                    cpus: '0.13'
-                    memory: '140MB'
+                    cpus: '0.73'
+                    memory: '240MB'
 
     api01: &api
         # TODO publicar image
@@ -40,8 +41,9 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.6'
-                    memory: '200MB'
+                    cpus: '0.3'
+                    memory: '135MB'
+        command: gunicorn --threads=2 --bind 0.0.0.0:8080 app:app
 
     api02:
         # Essa sintaxe reusa o que foi declarado em 'api01'.
@@ -66,10 +68,19 @@ services:
             resources:
                 limits:
                     cpus: '0.17'
-                    memory: '10MB'
-
+                    memory: '40MB'
+    # pgadmin:
+    #     image: dpage/pgadmin4
+    #     ports:
+    #         - 15432:80
+    #     environment:
+    #         - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+    #         - PGADMIN_DEFAULT_PASSWORD=admin
+    #     volumes:
+    #         - pg_admin:/var/lib/pgadmin
 volumes:
     pg_data: {}
+    pg_admin: {}
 
 # O uso do modo `bridge` deve ser adequado à carga que será usada no teste.
 # A edição anterior se beneficiou do modo host pois o volume de requisições
