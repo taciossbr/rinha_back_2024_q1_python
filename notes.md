@@ -26,3 +26,4 @@ Vou melhorar o extrato tambem, mas ...
 
 Vou tentar mecher nas configurações para limitar as requests
 
+Testar com e sem threads, com a nova e coma velha conf do docker compose
