@@ -12,28 +12,17 @@ services:
         volumes:
             - ./init_clientes.sql:/docker-entrypoint-initdb.d/init_clientes.sql:ro
             - ./postgres.conf:/docker-entrypoint-initdb.d/postgres.conf
-            # - pg_data:/var/lib/postgresql
         deploy:
             resources:
                 limits:
-                    # Note que a soma de todos os limites dos serviços
-                    # aqui declarados é de 1.5 unidades de CPU e 550MB
-                    # de memória. A distribuição feita aqui é apenas
-                    # um exemplo – distribua como quiser.
                     cpus: '0.7'
                     memory: '240MB'
 
     api01: &api
-        # TODO publicar image
         image: ghcr.io/taciossbr/rinha_back_2024_q1_python:1.0
-        build: .
         hostname: api01
         environment:
             - DATABASE_URL=postgres://rinha:rinha@db:5432/rinha
-
-        # Não é necessário expor qualquer porta além da porta do load balancer,
-        # mas é comum as pessoas o fazerem para testaremsuas APIs e conectarem
-        # ao banco de dados na fase de desenvolvimento.
         ports:
             - '8081:8080'
         depends_on:
@@ -44,10 +33,8 @@ services:
                     cpus: '0.35'
                     memory: '135MB'
         command: gunicorn --threads=2 --bind 0.0.0.0:8080 app:app
-        # command: gunicorn --bind 0.0.0.0:8080 app:app
 
     api02:
-        # Essa sintaxe reusa o que foi declarado em 'api01'.
         <<: *api
         hostname: api02
         environment:
@@ -63,32 +50,16 @@ services:
             - api01
             - api02
         ports:
-            # Obrigatório expor/usar a porta 9999 no load balancer!
             - '9999:9999'
         deploy:
             resources:
                 limits:
                     cpus: '0.1'
                     memory: '40MB'
-    # pgadmin:
-    #     image: dpage/pgadmin4
-    #     ports:
-    #         - 15432:80
-    #     environment:
-    #         - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-    #         - PGADMIN_DEFAULT_PASSWORD=admin
-    #     volumes:
-    #         - pg_admin:/var/lib/pgadmin
 volumes:
     pg_data: {}
     pg_admin: {}
 
-# O uso do modo `bridge` deve ser adequado à carga que será usada no teste.
-# A edição anterior se beneficiou do modo host pois o volume de requisições
-# era relativamente alto e a virtualização da rede se tornou um gargalo, mas
-# este modo é mais complexo de ser configurado. Fique à vontade para usar o
-# modo que quiser desde que não conflite com portas trivialmente usadas em um
-# SO.
 networks:
     default:
         driver: bridge
