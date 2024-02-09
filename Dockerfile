@@ -1,3 +1,5 @@
+# LABEL org.opencontainers.image.source=https://github.com/taciossbr/rinha_back_2024_q1_python
+
 FROM python:3.11-alpine AS builder
 RUN pip install poetry==1.5.1
 ENV POETRY_NO_INTERACTION=1 \
